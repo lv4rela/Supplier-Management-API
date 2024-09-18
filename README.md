@@ -26,7 +26,7 @@ The Supplier Management API is a RESTful service developed with Python and Flask
 Below is an overview of the architecture of the Supplier Management API.
 
 
-![Architecture Diagram](./img/architecture.png)
+![Architecture Diagram](./img/Architecture.png)
 
 ## Database Schema Diagram
 
