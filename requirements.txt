@@ -1,0 +1,7 @@
+Flask
+Flask-SQLAlchemy
+PyJWT
+Werkzeug
+bleach 
+flask-swagger-ui
+python-dotenv

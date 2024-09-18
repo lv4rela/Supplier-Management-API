@@ -1,0 +1,54 @@
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Flask instance folder (if used)
+instance/
+
+# SQLite database file
+*.db
+*.sqlite3
+
+# Environment variables file
+.env
+
+# Docker-related files
+docker-compose.override.yml
+.dockerignore
+
+# Logs
+*.log
+
+# Pytest cache
+.pytest_cache/
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# Swagger JSON and YAML files (if they are generated or should not be versioned)
+static/supplierApiSchema.json
+
+# Flask-specific cache and session files
+flask_cache/
+session/
+
+# Local configuration
+config.py
+
+# Backup files
+*.bak
+*.swp
+
+# Other system files
+.DS_Store
+Thumbs.db

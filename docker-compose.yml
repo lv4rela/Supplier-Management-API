@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8002:8002"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: >
+      sh -c "
+      flask db upgrade ||
+      flask db init && flask db migrate && flask db upgrade;
+      python app.py"
