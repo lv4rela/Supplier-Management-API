@@ -1,0 +1,436 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Supplier Management API",
+      "description": "This API is designed for the security team at Mercado Livre to maintain an updated record of the company's suppliers. The API provides endpoints for listing suppliers with specific filters, adding new suppliers, blocking/unblocking suppliers, and creating users with different roles (operational user and administrator). Authentication is managed via API Credentials and JWT tokens, ensuring secure access.",
+      "version": "1.0.0"
+    },
+    "host": "127.0.0.1:8002",
+    "basePath": "/",
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/suppliers": {
+        "get": {
+          "summary": "List Suppliers",
+          "description": "Fetches a list of suppliers based on filters.",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "name",
+              "in": "query",
+              "description": "Supplier name for filtering",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "severity",
+              "in": "query",
+              "description": "Severity level for filtering",
+              "required": false,
+              "type": "string",
+              "enum": ["low", "medium", "high","highest"]
+            },
+            {
+              "name": "service_type",
+              "in": "query",
+              "description": "Service type for filtering",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of suppliers",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Supplier"
+                }
+              }
+            },
+            "404": {
+              "description": "No suppliers found"
+            }
+          },
+          "security": [
+            {
+              "Bearer": []
+            }
+          ]
+        }
+      },
+      "/supplier/register": {
+        "post": {
+          "summary": "Register Supplier",
+          "description": "Creates a new supplier.",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Data of the supplier to be created",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/NewSupplier"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Supplier created",
+              "schema": {
+                "$ref": "#/definitions/Supplier"
+              }
+            },
+            "403": {
+              "description": "Only administrators can create suppliers"
+            },
+            "400": {
+              "description": "Validation error or supplier already exists"
+            },
+            "500": {
+              "description": "Error creating supplier"
+            }
+          },
+          "security": [
+            {
+              "Bearer": []
+            }
+          ]
+        }
+      },
+      "/suppliers/blocked": {
+        "put": {
+          "summary": "Block Supplier",
+          "description": "Blocks an existing supplier.",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "ID of the supplier to be blocked",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Supplier blocked",
+              "schema": {
+                "$ref": "#/definitions/Supplier"
+              }
+            },
+            "403": {
+              "description": "Only administrators can block suppliers"
+            },
+            "400": {
+              "description": "Supplier is already blocked or ID not provided"
+            }
+          },
+          "security": [
+            {
+              "Bearer": []
+            }
+          ]
+        }
+      },
+      "/suppliers/unblocked": {
+        "put": {
+          "summary": "Unblock Supplier",
+          "description": "Unblocks an existing supplier.",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "ID of the supplier to be unblocked",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Supplier unblocked",
+              "schema": {
+                "$ref": "#/definitions/Supplier"
+              }
+            },
+            "403": {
+              "description": "Only administrators can unblock suppliers"
+            },
+            "400": {
+              "description": "Supplier is already unblocked or ID not provided"
+            }
+          },
+          "security": [
+            {
+              "Bearer": []
+            }
+          ]
+        }
+      },
+      "/users/register": {
+        "post": {
+          "summary": "Register User",
+          "description": "Creates a new user.",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Data of the user to be created",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/NewUser"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "User created",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "403": {
+              "description": "Only administrators can create users"
+            },
+            "400": {
+              "description": "Validation error or user already exists"
+            }
+          },
+          "security": [
+            {
+              "Bearer": []
+            }
+          ]
+        }
+      },
+      "/users": {
+        "get": {
+          "summary": "List Users",
+          "description": "Fetches a list of all users.",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "List of users",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/User"
+                }
+              }
+            },
+            "403": {
+              "description": "Only administrators can view users"
+            },
+            "404": {
+              "description": "No users found"
+            }
+          },
+          "security": [
+            {
+              "Bearer": []
+            }
+          ]
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "summary": "Login",
+          "description": "Authenticates the user and returns a JWT token.",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Login credentials",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "JWT token",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid credentials"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Supplier": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "business_name": {
+            "type": "string"
+          },
+          "contact_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "fiscal_address": {
+            "type": "string"
+          },
+          "service_type": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "blocked": {
+            "type": "boolean"
+          }
+        }
+      },
+      "NewSupplier": {
+        "type": "object",
+        "required": [
+          "name",
+          "business_name",
+          "email",
+          "fiscal_address",
+          "service_type",
+          "severity"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "business_name": {
+            "type": "string"
+          },
+          "contact_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "fiscal_address": {
+            "type": "string"
+          },
+          "service_type": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "highest"]
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "NewUser": {
+        "type": "object",
+        "required": [
+          "username",
+          "password",
+          "role"
+        ],
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["operational", "admin"]
+          }
+        }
+      }
+    },
+    "securityDefinitions": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+}
