@@ -35,9 +35,6 @@ docker-compose.override.yml
 # PyCharm settings
 .idea/
 
-# Swagger JSON and YAML files (if they are generated or should not be versioned)
-static/supplierApiSchema.json
-
 # Flask-specific cache and session files
 flask_cache/
 session/
