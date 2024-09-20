@@ -39,9 +39,6 @@ docker-compose.override.yml
 flask_cache/
 session/
 
-# Local configuration
-config.py
-
 # Backup files
 *.bak
 *.swp
